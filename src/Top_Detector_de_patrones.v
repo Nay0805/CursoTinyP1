@@ -1,31 +1,28 @@
 module Top_Detector_de_patrones (
   input  wire       clk,
   input  wire       rst,
+  input  wire [7:0] bit_REGISTRO,   // viene de ui_in
+  input  wire [7:0] bit_LFSR,       // viene de uio_in
+  input  wire       pulso,          // o lo generás internamente
   output wire [3:0] leds
 );
 
-  wire       pulso;
-  wire [7:0] bit_REGISTRO;
-  wire       igual_alto;
-  wire       igual_bajo;
-  wire [7:0] bit_LFSR;
-  wire       flag;
+  wire igual_alto;
+  wire igual_bajo;
+  wire flag;
 
-  // Comparador bits bajos [3:0]
   Comparador u_cmp_bajo (
     .bit_REGISTRO (bit_REGISTRO[3:0]),
     .bit_LFSR     (bit_LFSR[3:0]),
     .igual        (igual_bajo)
   );
 
-  // Comparador bits altos [7:4]
   Comparador u_cmp_alto (
     .bit_REGISTRO (bit_REGISTRO[7:4]),
     .bit_LFSR     (bit_LFSR[7:4]),
     .igual        (igual_alto)
   );
 
-  // FSM detector
   FSM_DETECTOR u_fsm (
     .clk        (clk),
     .rst        (rst),
@@ -35,7 +32,6 @@ module Top_Detector_de_patrones (
     .flag       (flag)
   );
 
-  // flag va al LED 0, el resto apagados
   assign leds = {3'b000, flag};
 
 endmodule
