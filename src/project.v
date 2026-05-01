@@ -17,20 +17,18 @@ module tt_um_top_Detector (
 );
  
   // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out[7:4]  = 0; 
-  assign uio_out = 0;
-  assign uio_oe[7:1]  = 0;
- 
+  assign uo_out[7:4] = 4'b0000;
+  assign uio_out     = 8'b0;
+  assign uio_oe      = 8'b0;
   // List all unused inputs to prevent warnings
   wire _unused = &{ena, 1'b0};
- 
-  assign uio_oe[0] = 1'b0; // Set all IOs to input mode
- 
-  top_Detector_de_patrones U0 (
-  .clk(clk),     
-  .rst(rst_n), 
- .bit_REGISTRO(ui_in),
- .bit_LFSR(uio_in),             
- .leds(uo_out);  
+  
+  Top_Detector_de_patrones U0 (
+    .clk          (clk),
+    .rst          (rst_n),
+    .bit_REGISTRO (ui_in),
+    .bit_LFSR     (uio_in),
+    .leds         (uo_out[3:0])
+  ); 
    
 endmodule
