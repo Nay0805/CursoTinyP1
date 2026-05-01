@@ -28,7 +28,7 @@ module tt_um_example (
     .rst          (rst_n),
     .bit_REGISTRO (ui_in),
     .bit_LFSR     (uio_in),
-    .pulso        (1)
+    .pulso         (1'b1),
     .leds         (uo_out[3:0])
   ); 
    
