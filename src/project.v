@@ -2,34 +2,65 @@
 * Copyright (c) 2024 Your Name
 * SPDX-License-Identifier: Apache-2.0
 */
- 
-`default_nettype wire 
- 
+
+`default_nettype wire
+
 module tt_um_example (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
     output wire [7:0] uio_out,  // IOs: Output path
-    output wire [7:0] uio_oe,   // IOs: Enable path (active high: 0=input, 1=output)
-    input  wire       ena,      // always 1 when the design is powered, so you can ignore it
+    output wire [7:0] uio_oe,   // IOs: Enable path
+    input  wire       ena,      // always 1 when powered
     input  wire       clk,      // clock
     input  wire       rst_n     // reset_n - low to reset
 );
- 
-  // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out[7:4] = 4'b0000;
-  assign uio_out     = 8'b0;
-  assign uio_oe      = 8'b0;
-  // List all unused inputs to prevent warnings
-  wire _unused = &{ena, 1'b0};
-  
-  Top_Detector_de_patrones U0 (
-    .clk          (clk),
-    .rst          (rst_n),
-    .bit_REGISTRO (ui_in),
-    .bit_LFSR     (uio_in),
-    .pulso         (1'b1),
-    .leds         (uo_out[3:0])
-  ); 
-   
+
+    // ------------------------------------------------------------
+    // Señales internas
+    // ------------------------------------------------------------
+
+    wire       rst;
+    wire       rx;
+    wire       pulso;
+    wire       tx;
+    wire [3:0] leds;
+
+    assign rst   = ~rst_n;     // El top usa reset activo en alto
+    assign rx    = ui_in[0];   // Entrada serial UART
+    assign pulso = ui_in[1];   // Pulso para LFSR/FSM
+
+
+    // ------------------------------------------------------------
+    // Instancia del top principal
+    // ------------------------------------------------------------
+
+    top_uart_lfsr_detector U0 (
+        .clk   (clk),
+        .rst   (rst),
+        .rx    (rx),
+        .pulso (pulso),
+        .tx    (tx),
+        .leds  (leds)
+    );
+
+
+    // ------------------------------------------------------------
+    // Asignación de salidas
+    // ------------------------------------------------------------
+
+    assign uo_out[3:0] = leds;
+    assign uo_out[4]   = tx;
+    assign uo_out[7:5] = 3'b000;
+
+    assign uio_out = 8'b00000000;
+    assign uio_oe  = 8'b00000000;
+
+
+    // ------------------------------------------------------------
+    // Entradas no utilizadas para evitar warnings
+    // ------------------------------------------------------------
+
+    wire _unused = &{ena, ui_in[7:2], uio_in, 1'b0};
+
 endmodule
