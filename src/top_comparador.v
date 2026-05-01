@@ -3,9 +3,9 @@
 module top_uart_lfsr_detector (
     input  wire       clk,
     input  wire       rst,       // Reset activo en alto
-    input  wire       rx,        // Entrada serial desde consola/UART
-    input  wire       pulso,     // Pulso para avanzar/verificar
-    output wire       tx,        // Salida UART, aunque no se use directamente
+    input  wire       rx,        // Entrada UART desde consola
+    input  wire       pulso,     // Pulso para avanzar el LFSR/FSM
+    output wire       tx,        // Salida UART
     output wire [3:0] leds
 );
 
@@ -24,13 +24,13 @@ module top_uart_lfsr_detector (
 
     wire       lfsr_done;
 
-    assign rst_n = rst;
+    assign rst_n = ~rst;
 
 
     // ------------------------------------------------------------
     // UART
-    // Recibe el dato desde consola por rx.
-    // La salida data_out pasa al registro del UART.
+    // Recibe dato serial por rx.
+    // data_out entrega el dato recibido en paralelo.
     // ------------------------------------------------------------
 
     UART u_uart (
@@ -39,7 +39,7 @@ module top_uart_lfsr_detector (
         .tx_start    (1'b0),
         .tx_rdy      (tx_rdy),
         .rx_data_rdy (rx_data_rdy),
-        .data_in     (8'b0000_0000),
+        .data_in     (8'b00000000),
         .data_out    (uart_data_out),
         .rx          (rx),
         .tx          (tx)
@@ -48,22 +48,22 @@ module top_uart_lfsr_detector (
 
     // ------------------------------------------------------------
     // Registro del dato recibido por UART
-    // Se carga cuando rx_data_rdy indica que llegó un dato válido.
+    // Se carga cuando rx_data_rdy está activo.
     // ------------------------------------------------------------
 
-    reg_pp_8b_en_ar u_reg_uart (
-        .clk_i   (clk),
-        .rst_n_i (rst_n),
-        .d_i     (uart_data_out),
-        .en_i    (rx_data_rdy),
-        .q_o     (uart_reg_data)
+    register_8bit u_reg_uart (
+        .clk_i     (clk),
+        .reset_n_i (rst_n),
+        .load_i    (rx_data_rdy),
+        .data_i    (uart_data_out),
+        .data_o    (uart_reg_data)
     );
 
 
     // ------------------------------------------------------------
-    // LFSR + registro de 8 bits
+    // LFSR + registro
     // El LFSR avanza con pulso.
-    // El registro del LFSR carga cuando tx_rdy está activo.
+    // El registro del LFSR se carga con tx_rdy.
     // ------------------------------------------------------------
 
     tt_um_top_lfsr_register_8bit u_lfsr_register (
@@ -78,9 +78,7 @@ module top_uart_lfsr_detector (
 
     // ------------------------------------------------------------
     // Detector de patrones
-    // Compara:
-    // - salida del registro UART
-    // - salida del registro LFSR
+    // Compara salida del registro UART contra salida del registro LFSR.
     // ------------------------------------------------------------
 
     Top_Detector_de_patrones u_detector (
