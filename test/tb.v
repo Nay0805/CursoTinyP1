@@ -28,7 +28,7 @@ module tb ();
 `endif
 
   // Replace tt_um_example with your module name:
-  tt_um_example user_project (
+  tt_um_Nay0805_detector_de_patrones_generados_aleatoreamente user_project (
 
       // Include power ports for the Gate Level test:
 `ifdef GL_TEST
