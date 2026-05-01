@@ -1,20 +1,32 @@
-<!---
-
-This file is used to generate your project datasheet. Please fill in the information below and delete any unused
-sections.
-
-You can also include images in this folder and reference them in the markdown. Each image must be less than
-512 kb in size, and the combined size of all images must be less than 1 MB.
--->
-
 ## How it works
 
-Explain how your project works
+Este proyecto implementa un UART de entrada serial. El dato recibido por la línea serial es almacenado en un registro, el cual genera una salida paralela de 8 bits.
 
 ## How to test
 
-Explain how to use your project
+The project includes a testbench that automatically verifies the UART receiver and output register operation.
+
+Test procedure:
+
+1. Initialize all inputs to zero.
+2. Generate the system clock and reset signal.
+3. Send serial data through the UART input line.
+4. Simulate a complete UART frame, including:
+   - Start bit
+   - 8 data bits
+   - Stop bit
+5. Wait for the UART receiver to finish receiving the byte.
+6. Verify that the received 8-bit data is correctly stored in the output register.
+7. Observe the output `q_o` and confirm that it matches the transmitted serial byte.
+
+Simulation waveform files are generated using:
+
+- `tb.vcd`
+
+These waveforms can be viewed using GTKWave or another VCD waveform viewer.
 
 ## External hardware
 
-List external hardware used in your project (e.g. PMOD, LED display, etc), if any
+No external hardware is required for simulation.
+
+For real hardware implementation, an external UART transmitter or USB-to-serial adapter can be used to send serial data to the FPGA or target board.
