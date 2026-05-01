@@ -30,34 +30,34 @@ project:
 # This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
 pinout:
   # Inputs
-  ui[0]: "REGISTRO0"
-  ui[1]: "REGISTRO1"
-  ui[2]: "REGISTRO2"
-  ui[3]: "REGISTRO3"
-  ui[4]: "REGISTRO4"
-  ui[5]: "REGISTRO5"
-  ui[6]: "REGISTRO6"
-  ui[7]: "REGISTRO7"
+  ui[0]: "rx"
+  ui[1]: "pulso"
+  ui[2]: ""
+  ui[3]: ""
+  ui[4]: ""
+  ui[5]: ""
+  ui[6]: ""
+  ui[7]: ""
 
   # Outputs
-  uo[0]: "flag"
-  uo[1]: ""
-  uo[2]: ""
-  uo[3]: ""
-  uo[4]: ""
+  uo[0]: "led0"
+  uo[1]: "led1"
+  uo[2]: "led2"
+  uo[3]: "led3"
+  uo[4]: "tx"
   uo[5]: ""
   uo[6]: ""
   uo[7]: ""
 
   # Bidirectional pins
-  uio[0]: "LFSR0"
-  uio[1]: "LFSR1"
-  uio[2]: "LFSR2"
-  uio[3]: "LFSR3"
-  uio[4]: "LFSR4"
-  uio[5]: "LFSR5"
-  uio[6]: "LFSR6"
-  uio[7]: "LFSR7"
-
+  uio[0]: ""
+  uio[1]: ""
+  uio[2]: ""
+  uio[3]: ""
+  uio[4]: ""
+  uio[5]: ""
+  uio[6]: ""
+  uio[7]: ""
+  
 # Do not change!
 yaml_version: 6
