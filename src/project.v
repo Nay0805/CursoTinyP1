@@ -5,7 +5,7 @@
  
 `default_nettype none
  
-module tt_um_example (
+module top_Detector (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -22,15 +22,15 @@ module tt_um_example (
   assign uio_oe[7:1]  = 0;
  
   // List all unused inputs to prevent warnings
-  wire _unused = &{ena, clk, rst_n, uio_in[7:1], 1'b0};
+  wire _unused = &{ena, 1'b0};
  
   assign uio_oe[0] = 1'b0; // Set all IOs to input mode
  
-  mux_2to1_4b U0 (
-  .a_i(ui_in[3:0]),
-  .b_i(uio_in[7:4]),
-  .s_i(uio_oe[0]),
-  .q_o(uio_out[3:0]) );
- 
- 
+  top_Detector_de_patrones U0 (
+  .clk(clk),     
+  .rst(rst_n), 
+ .bit_REGISTRO(ui_in),
+ .bit_LFSR(uio_in),             
+ .leds(uo_out);  
+   
 endmodule
