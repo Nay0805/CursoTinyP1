@@ -36,24 +36,24 @@ pinout:
   ui[7]: "REGISTRO7"
 
   # Outputs
-  uo[0]: "leds0"
-  uo[1]: "leds1"
-  uo[2]: "leds2"
-  uo[3]: "leds3"
-  uo[4]: "leds4"
-  uo[5]: "leds5"
-  uo[6]: "leds6"
-  uo[7]: "leds7"
+  uo[0]: "flag"
+  uo[1]: ""
+  uo[2]: ""
+  uo[3]: ""
+  uo[4]: ""
+  uo[5]: ""
+  uo[6]: ""
+  uo[7]: ""
 
   # Bidirectional pins
-  uio[0]: "flag"
-  uio[1]: ""
-  uio[2]: ""
-  uio[3]: ""
-  uio[4]: ""
-  uio[5]: ""
-  uio[6]: ""
-  uio[7]: ""
+  uio[0]: "LFSR0"
+  uio[1]: "LFSR1"
+  uio[2]: "LFSR2"
+  uio[3]: "LFSR3"
+  uio[4]: "LFSR4"
+  uio[5]: "LFSR5"
+  uio[6]: "LFSR6"
+  uio[7]: "LFSR7"
 
 # Do not change!
 yaml_version: 6
